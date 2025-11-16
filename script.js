@@ -1,6 +1,23 @@
 // Modern Tourist Website JavaScript
 document.addEventListener('DOMContentLoaded', function() {
     
+    // Hero Image Carousel
+    const heroSlides = document.querySelectorAll('.hero-slide');
+    let currentHeroSlide = 0;
+    
+    function rotateHeroSlides() {
+        if (heroSlides.length > 0) {
+            heroSlides[currentHeroSlide].classList.remove('active');
+            currentHeroSlide = (currentHeroSlide + 1) % heroSlides.length;
+            heroSlides[currentHeroSlide].classList.add('active');
+        }
+    }
+    
+    // Rotate hero images every 5 seconds
+    if (heroSlides.length > 0) {
+        setInterval(rotateHeroSlides, 5000);
+    }
+    
     // Header scroll effect
     const header = document.getElementById('main-header');
     
@@ -45,9 +62,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const prevBtn = card.querySelector('.prev-btn');
         const nextBtn = card.querySelector('.next-btn');
         const dots = card.querySelectorAll('.dot');
-        const favoriteBtn = card.querySelector('.favorite-btn');
         
-        let currentSlide = 1;
+        let currentSlide = 0;
         const totalSlides = images.length;
 
         // Navigation functions
@@ -175,32 +191,6 @@ document.addEventListener('DOMContentLoaded', function() {
         card.addEventListener('mouseenter', stopAutoPlay);
         card.addEventListener('mouseleave', startAutoPlay);
 
-        // Favorite functionality
-        if (favoriteBtn) {
-            favoriteBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                this.classList.toggle('favorited');
-                
-                const isFavorited = this.classList.contains('favorited');
-                const attractionName = card.querySelector('.attraction-title').textContent;
-                
-                if (isFavorited) {
-                    console.log(`Added ${attractionName} to favorites`);
-                    // Here you would typically save to localStorage or send to server
-                    localStorage.setItem(`favorite_${card.dataset.attraction}`, 'true');
-                } else {
-                    console.log(`Removed ${attractionName} from favorites`);
-                    localStorage.removeItem(`favorite_${card.dataset.attraction}`);
-                }
-            });
-            
-            // Load saved favorite state
-            const isFavorited = localStorage.getItem(`favorite_${card.dataset.attraction}`) === 'true';
-            if (isFavorited) {
-                favoriteBtn.classList.add('favorited');
-            }
-        }
-
         // Image click to open lightbox
         images.forEach(img => {
             img.addEventListener('click', function() {
@@ -265,13 +255,74 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(el);
     });
 
-    // Parallax effect for hero section
+    // Enhanced Parallax effect for hero section
     const hero = document.getElementById('hero');
-    window.addEventListener('scroll', function() {
+    const heroBackground = document.querySelector('.hero-background');
+    const heroContent = document.querySelector('.hero-content');
+    
+    // Mouse move parallax variables
+    let mouseParallaxX = 0;
+    let mouseParallaxY = 0;
+    
+    // Update parallax effects
+    function updateParallax() {
         const scrolled = window.pageYOffset;
-        const rate = scrolled * -0.5;
-        hero.style.transform = `translateY(${rate}px)`;
-    });
+        const heroHeight = hero ? hero.offsetHeight : 0;
+        
+        if (scrolled < heroHeight && heroBackground) {
+            // Parallax background movement
+            const backgroundRate = scrolled * 0.3;
+            const backgroundScale = 1 + scrolled * 0.0005;
+            
+            heroBackground.style.transform = `translateY(${backgroundRate}px) translate(${mouseParallaxX}px, ${mouseParallaxY}px) scale(${backgroundScale})`;
+            
+            // Parallax content movement (slower)
+            const contentRate = scrolled * 0.2;
+            if (heroContent) {
+                heroContent.style.transform = `translateY(${contentRate}px) translate(${mouseParallaxX * 0.3}px, ${mouseParallaxY * 0.3}px)`;
+            }
+            
+            // Fade out effect as you scroll
+            const opacity = 1 - (scrolled / heroHeight) * 0.5;
+            if (heroContent) {
+                heroContent.style.opacity = Math.max(opacity, 0.5);
+            }
+        } else {
+            // Reset when scrolled past hero
+            if (heroBackground) {
+                heroBackground.style.transform = `translate(${mouseParallaxX}px, ${mouseParallaxY}px)`;
+            }
+            if (heroContent) {
+                heroContent.style.transform = `translate(${mouseParallaxX * 0.3}px, ${mouseParallaxY * 0.3}px)`;
+            }
+        }
+    }
+    
+    // Scroll parallax
+    window.addEventListener('scroll', updateParallax);
+    
+    // Mouse move parallax effect
+    if (hero) {
+        hero.addEventListener('mousemove', function(e) {
+            const rect = hero.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            mouseParallaxX = (x - centerX) / 20;
+            mouseParallaxY = (y - centerY) / 20;
+            
+            updateParallax();
+        });
+        
+        hero.addEventListener('mouseleave', function() {
+            mouseParallaxX = 0;
+            mouseParallaxY = 0;
+            updateParallax();
+        });
+    }
 
     // Mobile menu toggle (for future implementation)
     function createMobileMenu() {
@@ -299,10 +350,12 @@ document.addEventListener('DOMContentLoaded', function() {
             navLinks.classList.toggle('mobile-open');
         });
         
-        // Show hamburger on mobile
+        // Show hamburger on mobile (but keep nav visible on desktop)
         if (window.innerWidth <= 768) {
             hamburger.style.display = 'block';
-            navLinks.style.display = 'none';
+            // Don't hide nav on initial load, let CSS handle it
+        } else {
+            navLinks.style.display = 'flex';
         }
     }
 
@@ -316,7 +369,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (window.innerWidth <= 768) {
             if (hamburger) hamburger.style.display = 'block';
-            navLinks.style.display = 'none';
+            // Keep nav visible, just toggle with hamburger
         } else {
             if (hamburger) hamburger.style.display = 'none';
             navLinks.style.display = 'flex';
@@ -327,18 +380,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add loading animation to page
     window.addEventListener('load', function() {
         document.body.classList.add('loaded');
-    });
-
-    // Card hover effects
-    const cards = document.querySelectorAll('.destination-card');
-    cards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-10px) scale(1.02)';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0) scale(1)';
-        });
     });
 
     // Smooth reveal animation for sections
@@ -357,6 +398,222 @@ document.addEventListener('DOMContentLoaded', function() {
         section.style.transform = 'translateY(30px)';
         section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         sectionObserver.observe(section);
+    });
+
+    // Learn More Button - Choice Modal Functionality
+    const learnMoreButtons = document.querySelectorAll('.card-btn');
+    const choiceModal = document.getElementById('choice-modal');
+    const choiceModalClose = document.querySelector('.choice-modal-close');
+    const choiceButtons = document.querySelectorAll('.choice-btn');
+    let currentDestinationId = null;
+    let currentDestinationName = null;
+
+    // Location data for each destination with proper Google Maps links
+    const destinationData = {
+        'hinulugang-taktak': {
+            name: 'Hinulugang Taktak Falls',
+            location: 'https://www.google.com/maps?q=Hinulugang+Taktak+Falls,+Antipolo,+Rizal,+Philippines&hl=en',
+            coordinates: '14.5864,121.1753',
+            story: 'Hinulugang Taktak Falls is a historic waterfall in Antipolo City, Rizal, Philippines. The name "Hinulugang Taktak" means "the place where the bell was dropped" in Tagalog. According to local legend, during the Spanish colonial period, a priest ordered the removal of a bell from the church because its ringing disturbed his sleep. The bell was thrown into the waterfall, giving it its name. Today, it is a popular tourist destination and has been rehabilitated as a national park.'
+        },
+        'pinto-art-museum': {
+            name: 'Pinto Art Museum',
+            location: 'https://www.google.com/maps?q=Pinto+Art+Museum,+Sierra+Madre+St,+Antipolo,+Rizal,+Philippines&hl=en',
+            coordinates: '14.5924,121.1756',
+            story: 'Pinto Art Museum is a contemporary art museum located in Antipolo City, Rizal. Founded by Dr. Joven Cuanang, it houses a collection of Filipino contemporary art in a beautiful Mediterranean-inspired building surrounded by lush gardens. The museum aims to promote Filipino art and culture, featuring works from both established and emerging artists. The name "Pinto" means "door" in Filipino, symbolizing the gateway to Filipino art and culture.'
+        },
+        'antipolo-cathedral': {
+            name: 'Antipolo Cathedral',
+            location: 'https://www.google.com/maps?q=Antipolo+Cathedral,+P.+Oliveros+St,+Antipolo,+Rizal,+Philippines&hl=en',
+            coordinates: '14.5842,121.1762',
+            story: 'The Antipolo Cathedral, officially known as the International Shrine of Our Lady of Peace and Good Voyage, is one of the most important pilgrimage sites in the Philippines. The cathedral houses the image of Our Lady of Peace and Good Voyage (Nuestra Señora de la Paz y Buen Viaje), which was brought from Mexico in 1626. Every year, thousands of devotees visit the cathedral, especially during the Maytime pilgrimage. The current structure was completed in 1954 and has become an iconic landmark of Antipolo City.'
+        },
+        'cloud-9': {
+            name: 'Cloud 9',
+            location: 'https://www.google.com/maps?q=Cloud+9+Antipolo,+Sumulong+Highway,+Antipolo,+Rizal,+Philippines&hl=en',
+            coordinates: '14.6238,121.1767',
+            story: 'Cloud 9 is a popular mountain resort and viewpoint in Antipolo City, known for its breathtaking panoramic views of Metro Manila. The resort features a thrilling hanging bridge and elevated platforms that allow visitors to experience the sensation of being "above the clouds." It is a favorite destination for sunrise watching, photography, and relaxation. The name "Cloud 9" reflects the feeling of euphoria and peace that visitors experience when viewing the stunning landscape from this elevated location.'
+        },
+        'mount-purro': {
+            name: 'Mount Purro Nature Reserve',
+            location: 'https://www.google.com/maps?q=Mount+Purro+Nature+Reserve,+Antipolo,+Rizal,+Philippines&hl=en',
+            coordinates: '14.6500,121.2000',
+            story: 'Mount Purro Nature Reserve is an eco-tourism destination dedicated to conservation and sustainable tourism. The reserve offers visitors a chance to reconnect with nature through hiking trails, wildlife viewing, and various eco-friendly activities. It was established to preserve the natural environment while providing educational experiences about biodiversity and environmental conservation. The reserve promotes responsible tourism and serves as a sanctuary for local flora and fauna.'
+        }
+    };
+
+    // Function to open choice modal
+    function openChoiceModal(destinationId, destinationName) {
+        currentDestinationId = destinationId;
+        currentDestinationName = destinationName;
+        choiceModal.classList.add('show');
+        choiceModal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+    }
+
+    // Function to close choice modal
+    function closeChoiceModal() {
+        choiceModal.classList.remove('show');
+        choiceModal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = 'auto';
+        currentDestinationId = null;
+        currentDestinationName = null;
+    }
+
+    // Handle Learn More button clicks
+    learnMoreButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const destinationId = this.getAttribute('data-id');
+            const destinationCard = this.closest('.destination-card');
+            const destinationName = destinationCard ? destinationCard.querySelector('h3').textContent : 'Destination';
+            
+            openChoiceModal(destinationId, destinationName);
+        });
+    });
+
+    // Handle choice button clicks
+    choiceButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const action = this.getAttribute('data-action');
+            const data = destinationData[currentDestinationId];
+            
+            if (!data) {
+                alert('Destination information not available.');
+                closeChoiceModal();
+                return;
+            }
+
+            if (action === 'location') {
+                // Show embedded map modal
+                const mapModal = document.createElement('div');
+                mapModal.className = 'map-modal-overlay';
+                mapModal.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.9);
+                    z-index: 4000;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    padding: 2rem;
+                `;
+                
+                mapModal.innerHTML = `
+                    <div style="background: #1a1a1a; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 2rem; max-width: 900px; width: 100%; position: relative; max-height: 90vh; overflow-y: auto;">
+                        <button class="map-close-btn" style="position: absolute; top: 1rem; right: 1rem; background: rgba(255, 255, 255, 0.1); border: none; color: white; font-size: 1.5rem; width: 2.5rem; height: 2.5rem; border-radius: 50%; cursor: pointer; z-index: 10;">&times;</button>
+                        <h2 style="font-family: 'Playfair Display', serif; color: #ffffff; margin-bottom: 1.5rem; font-size: 2rem;">${data.name} - Location</h2>
+                        <div style="width: 100%; height: 450px; border-radius: 8px; overflow: hidden; margin-bottom: 1rem; position: relative;">
+                            <iframe 
+                                width="100%" 
+                                height="100%" 
+                                style="border:0" 
+                                loading="lazy" 
+                                allowfullscreen
+                                referrerpolicy="no-referrer-when-downgrade"
+                                src="https://maps.google.com/maps?q=${encodeURIComponent(data.name + ', Antipolo, Rizal, Philippines')}&t=&z=15&ie=UTF8&iwloc=&output=embed">
+                            </iframe>
+                        </div>
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.name + ', Antipolo, Rizal, Philippines')}" target="_blank" style="background: #10b981; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s;">Open in Google Maps</a>
+                            <a href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(data.name + ', Antipolo, Rizal, Philippines')}" target="_blank" style="background: #2563eb; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s;">Get Directions</a>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(mapModal);
+                document.body.style.overflow = 'hidden';
+                
+                // Close map modal
+                const closeBtn = mapModal.querySelector('.map-close-btn');
+                closeBtn.addEventListener('click', () => {
+                    document.body.removeChild(mapModal);
+                    document.body.style.overflow = 'auto';
+                });
+                
+                mapModal.addEventListener('click', function(e) {
+                    if (e.target === mapModal) {
+                        document.body.removeChild(mapModal);
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+                
+                // Close with Escape key
+                const escapeHandler = function(e) {
+                    if (e.key === 'Escape' && document.body.contains(mapModal)) {
+                        document.body.removeChild(mapModal);
+                        document.body.style.overflow = 'auto';
+                        document.removeEventListener('keydown', escapeHandler);
+                    }
+                };
+                document.addEventListener('keydown', escapeHandler);
+                
+                closeChoiceModal();
+            } else if (action === 'story') {
+                // Show story in an alert or create a story modal
+                const storyModal = document.createElement('div');
+                storyModal.className = 'story-modal-overlay';
+                storyModal.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.9);
+                    z-index: 4000;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    padding: 2rem;
+                `;
+                
+                storyModal.innerHTML = `
+                    <div style="background: #1a1a1a; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 2rem; max-width: 600px; width: 100%; position: relative;">
+                        <button class="story-close-btn" style="position: absolute; top: 1rem; right: 1rem; background: rgba(255, 255, 255, 0.1); border: none; color: white; font-size: 1.5rem; width: 2.5rem; height: 2.5rem; border-radius: 50%; cursor: pointer;">&times;</button>
+                        <h2 style="font-family: 'Playfair Display', serif; color: #ffffff; margin-bottom: 1.5rem; font-size: 2rem;">${data.name}</h2>
+                        <p style="color: #d1d5db; line-height: 1.8; font-size: 1.1rem;">${data.story}</p>
+                    </div>
+                `;
+                
+                document.body.appendChild(storyModal);
+                
+                // Close story modal
+                const closeBtn = storyModal.querySelector('.story-close-btn');
+                closeBtn.addEventListener('click', () => {
+                    document.body.removeChild(storyModal);
+                    document.body.style.overflow = 'auto';
+                });
+                
+                storyModal.addEventListener('click', function(e) {
+                    if (e.target === storyModal) {
+                        document.body.removeChild(storyModal);
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+                
+                closeChoiceModal();
+            }
+        });
+    });
+
+    // Close choice modal
+    choiceModalClose.addEventListener('click', closeChoiceModal);
+    
+    // Close modal when clicking outside
+    choiceModal.addEventListener('click', function(e) {
+        if (e.target === choiceModal) {
+            closeChoiceModal();
+        }
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && choiceModal.classList.contains('show')) {
+            closeChoiceModal();
+        }
     });
 
     console.log('Antipolo Tourism Website - JavaScript loaded successfully!');

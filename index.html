@@ -13,7 +13,7 @@
 
     <header id="main-header">
         <nav>
-            <div class="logo">Antipoleños</div>
+            <a class="logo" href="#hero">Antipoleños</a>
             <ul class="nav-links">
                 <li><a href="#hero">Home</a></li>
                 <li><a href="#destinations">Destinations</a></li>
@@ -24,6 +24,22 @@
 
     <main>
         <section id="hero">
+            <div class="hero-background">
+                <div class="hero-slides">
+                    <div class="hero-slide active" style="background-image: url('pintobackground1.3.jpg');"></div>
+                    <div class="hero-slide" style="background-image: url('antipolo cathedra1l.jpg');"></div>
+                    <div class="hero-slide" style="background-image: url('cloud9.MAIN.jpg');"></div>
+                    <div class="hero-slide" style="background-image: url('hinulugan-taktak.png');"></div>
+                </div>
+            </div>
+            <div class="floating-particles">
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+            </div>
             <div class="hero-content">
                 <h1 class="hero-title">Discover Antipolo</h1>
                 <p class="hero-subtitle">Experience the culture, nature, and breathtaking views of the City of Antipolo</p>
@@ -44,7 +60,7 @@
                         <div class="card-content">
                             <h3>Hinulugang Taktak Falls</h3>
                             <p>Experience the natural beauty of this historic waterfall, perfect for nature lovers and photography enthusiasts.</p>
-                            <a href="#" class="card-btn">Learn More</a>
+                            <a href="#" class="card-btn" data-id="hinulugang-taktak" aria-haspopup="dialog">Learn More</a>
                         </div>
                     </div>
 
@@ -55,7 +71,7 @@
                         <div class="card-content">
                             <h3>Pinto Art Museum</h3>
                             <p>Immerse yourself in contemporary Filipino art in this beautiful museum surrounded by lush gardens.</p>
-                            <a href="#" class="card-btn">Learn More</a>
+                            <a href="#" class="card-btn" data-id="pinto-art-museum" aria-haspopup="dialog">Learn More</a>
                         </div>
                     </div>
 
@@ -66,7 +82,7 @@
                         <div class="card-content">
                             <h3>Antipolo Cathedral</h3>
                             <p>Visit the National Shrine of Our Lady of Peace and Good Voyage, a significant religious landmark.</p>
-                            <a href="#" class="card-btn">Learn More</a>
+                            <a href="#" class="card-btn" data-id="antipolo-cathedral" aria-haspopup="dialog">Learn More</a>
                         </div>
                     </div>
 
@@ -77,7 +93,7 @@
                         <div class="card-content">
                             <h3>Cloud 9</h3>
                             <p>Enjoy panoramic views of Metro Manila from this popular viewpoint with thrilling hanging bridge.</p>
-                            <a href="#" class="card-btn">Learn More</a>
+                            <a href="#" class="card-btn" data-id="cloud-9" aria-haspopup="dialog">Learn More</a>
                         </div>
                     </div>
 
@@ -88,7 +104,7 @@
                         <div class="card-content">
                             <h3>Mount Purro Nature Reserve</h3>
                             <p>Discover pristine nature and eco-tourism activities in this beautiful mountain reserve with hiking trails and wildlife.</p>
-                            <a href="#" class="card-btn">Learn More</a>
+                            <a href="#" class="card-btn" data-id="mount-purro" aria-haspopup="dialog">Learn More</a>
                         </div>
                     </div>
                 </div>
@@ -236,7 +252,7 @@
                 <div class="gallery-track">
                     <img src="antipolo cathedra1l.jpg" alt="Antipolo Cathedral exterior" class="gallery-image active">
                     <img src="main-altar-chatedral.jpg" alt="Antipolo Cathedral interior" class="gallery-image">
-                    <img src="inside-cathedral.jpg"Antipolo Cathedral plaza" class="gallery-image">
+                    <img src="inside-cathedral.jpg" alt="Antipolo Cathedral plaza" class="gallery-image">
                     <img src="insidesecond-cathedral.jpg" alt="Antipolo Cathedral religious art" class="gallery-image">
                 </div>
 
@@ -316,14 +332,19 @@
         </section>
 
     </main>
-
-    <footer>
-        <div class="container">
-            <p>Magtataho_69. All rights reserved.</p>
+    
+    <!-- Choice Modal for Learn More -->
+    <div id="choice-modal" class="choice-modal-overlay" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="choice-modal">
+            <button class="choice-modal-close" aria-label="Close modal">&times;</button>
+            <h2 class="choice-modal-title">Choose an Option</h2>
+            <div class="choice-modal-options">
+                <button class="choice-btn location" data-action="location">Check Location</button>
+                <button class="choice-btn story" data-action="story">Story of this Spot</button>
+            </div>
         </div>
-    </footer>
+    </div>
     
     <script src="script.js"></script>
-
 </body>
 </html>
