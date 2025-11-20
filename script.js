@@ -1,7 +1,7 @@
-// Modern Tourist Website JavaScript
+
 document.addEventListener('DOMContentLoaded', function() {
     
-    // Hero Image Carousel
+    // hero image carousel
     const heroSlides = document.querySelectorAll('.hero-slide');
     let currentHeroSlide = 0;
     
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Rotate hero images every 5 seconds
+    // rotate hero images every 5 seconds
     if (heroSlides.length > 0) {
         setInterval(rotateHeroSlides, 5000);
     }
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Tourist Attraction Gallery Functionality
+    // tourist attraction gallery functionaliti
     const attractionCards = document.querySelectorAll('.attraction-card');
     
     attractionCards.forEach(card => {
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let currentSlide = 0;
         const totalSlides = images.length;
 
-        // Navigation functions
+        // navigation functions
         function showSlide(index) {
             images.forEach((img, i) => {
                 img.classList.toggle('active', i === index);
@@ -89,16 +89,16 @@ document.addEventListener('DOMContentLoaded', function() {
             showSlide(currentSlide);
         }
 
-        // Event listeners
+        // event listeners
         if (nextBtn) nextBtn.addEventListener('click', nextSlide);
         if (prevBtn) prevBtn.addEventListener('click', prevSlide);
         
-        // Dot navigation
+        // dot navigation
         dots.forEach((dot, index) => {
             dot.addEventListener('click', () => showSlide(index));
         });
 
-        // Touch/swipe functionality for mobile
+        // touch/swipe functionality for mobile
         let startX = 0;
         let endX = 0;
         let isDragging = false;
@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Mouse drag functionality for desktop
+        // mouse drag functionality for desktop
         let mouseStartX = 0;
         let mouseEndX = 0;
         let isMouseDragging = false;
@@ -205,10 +205,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeBtn = document.querySelector('.close-btn');
 
     function openLightbox(src, alt) {
+        // reset image to ensure proper centering
+        lightboxImg.style.display = 'none';
         lightboxImg.src = src;
         lightboxImg.alt = alt;
-        lightbox.classList.add('show');
-        document.body.style.overflow = 'hidden';
+        
+        // Wait for image to load before showing
+        lightboxImg.onload = function() {
+            lightboxImg.style.display = 'block';
+            lightbox.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        };
+        
+        // if image is already cached, show immediately
+        if (lightboxImg.complete) {
+            lightboxImg.style.display = 'block';
+            lightbox.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
     }
 
     // Close lightbox
@@ -234,7 +248,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 
-    // Intersection Observer for animations
+    // intersection observer for animations bukas ka na 
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
@@ -248,91 +262,22 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }, observerOptions);
 
-    // Observe elements for animation
+    // observe elements for animation almost done
     const animatedElements = document.querySelectorAll('.destination-card, .gallery-img, .contact-item, .contact-form');
     animatedElements.forEach(el => {
         el.classList.add('loading');
         observer.observe(el);
     });
 
-    // Enhanced Parallax effect for hero section
-    const hero = document.getElementById('hero');
-    const heroBackground = document.querySelector('.hero-background');
-    const heroContent = document.querySelector('.hero-content');
-    
-    // Mouse move parallax variables
-    let mouseParallaxX = 0;
-    let mouseParallaxY = 0;
-    
-    // Update parallax effects
-    function updateParallax() {
-        const scrolled = window.pageYOffset;
-        const heroHeight = hero ? hero.offsetHeight : 0;
-        
-        if (scrolled < heroHeight && heroBackground) {
-            // Parallax background movement
-            const backgroundRate = scrolled * 0.3;
-            const backgroundScale = 1 + scrolled * 0.0005;
-            
-            heroBackground.style.transform = `translateY(${backgroundRate}px) translate(${mouseParallaxX}px, ${mouseParallaxY}px) scale(${backgroundScale})`;
-            
-            // Parallax content movement (slower)
-            const contentRate = scrolled * 0.2;
-            if (heroContent) {
-                heroContent.style.transform = `translateY(${contentRate}px) translate(${mouseParallaxX * 0.3}px, ${mouseParallaxY * 0.3}px)`;
-            }
-            
-            // Fade out effect as you scroll
-            const opacity = 1 - (scrolled / heroHeight) * 0.5;
-            if (heroContent) {
-                heroContent.style.opacity = Math.max(opacity, 0.5);
-            }
-        } else {
-            // Reset when scrolled past hero
-            if (heroBackground) {
-                heroBackground.style.transform = `translate(${mouseParallaxX}px, ${mouseParallaxY}px)`;
-            }
-            if (heroContent) {
-                heroContent.style.transform = `translate(${mouseParallaxX * 0.3}px, ${mouseParallaxY * 0.3}px)`;
-            }
-        }
-    }
-    
-    // Scroll parallax
-    window.addEventListener('scroll', updateParallax);
-    
-    // Mouse move parallax effect
-    if (hero) {
-        hero.addEventListener('mousemove', function(e) {
-            const rect = hero.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            
-            mouseParallaxX = (x - centerX) / 20;
-            mouseParallaxY = (y - centerY) / 20;
-            
-            updateParallax();
-        });
-        
-        hero.addEventListener('mouseleave', function() {
-            mouseParallaxX = 0;
-            mouseParallaxY = 0;
-            updateParallax();
-        });
-    }
-
     // Mobile menu toggle (for future implementation)
     function createMobileMenu() {
         const nav = document.querySelector('nav');
         const navLinks = document.querySelector('.nav-links');
         
-        // Create hamburger button
+        // create hamburger button 
         const hamburger = document.createElement('button');
         hamburger.className = 'hamburger';
-        hamburger.innerHTML = '☰';
+        hamburger.innerHTML = '&#9776';
         hamburger.style.cssText = `
             display: none;
             background: none;
@@ -342,7 +287,7 @@ document.addEventListener('DOMContentLoaded', function() {
             color: var(--text-dark);
         `;
         
-        // Add hamburger to nav
+        // add hamburger to nav links
         nav.appendChild(hamburger);
         
         // Toggle mobile menu
@@ -350,7 +295,7 @@ document.addEventListener('DOMContentLoaded', function() {
             navLinks.classList.toggle('mobile-open');
         });
         
-        // Show hamburger on mobile (but keep nav visible on desktop)
+        //  hamburger on mobile (but keep nav visible on desktop)
         if (window.innerWidth <= 768) {
             hamburger.style.display = 'block';
             // Don't hide nav on initial load, let CSS handle it
@@ -400,15 +345,7 @@ document.addEventListener('DOMContentLoaded', function() {
         sectionObserver.observe(section);
     });
 
-    // Learn More Button - Choice Modal Functionality
-    const learnMoreButtons = document.querySelectorAll('.card-btn');
-    const choiceModal = document.getElementById('choice-modal');
-    const choiceModalClose = document.querySelector('.choice-modal-close');
-    const choiceButtons = document.querySelectorAll('.choice-btn');
-    let currentDestinationId = null;
-    let currentDestinationName = null;
-
-    // Location data for each destination with proper Google Maps links
+    // Destination data for quick links of designated ares from antipolo city.
     const destinationData = {
         'hinulugang-taktak': {
             name: 'Hinulugang Taktak Falls',
@@ -442,178 +379,164 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    // Function to open choice modal
-    function openChoiceModal(destinationId, destinationName) {
-        currentDestinationId = destinationId;
-        currentDestinationName = destinationName;
-        choiceModal.classList.add('show');
-        choiceModal.setAttribute('aria-hidden', 'false');
+    function buildMapLinks(data) {
+        const defaultLocation = data?.name ? `${data.name}, Antipolo, Rizal, Philippines` : 'Antipolo, Rizal, Philippines';
+        const rawCoordinates = typeof data?.coordinates === 'string' ? data.coordinates.trim() : '';
+        const sanitizedCoordinates = rawCoordinates.replace(/\s+/g, '');
+        const mapQuery = sanitizedCoordinates || defaultLocation;
+        const encodedQuery = encodeURIComponent(mapQuery);
+        
+        return {
+            embedSrc: `https://maps.google.com/maps?q=${encodedQuery}&t=&z=15&ie=UTF8&iwloc=&output=embed`,
+            viewLink: data?.location || `https://www.google.com/maps/search/?api=1&query=${encodedQuery}`,
+            directionsLink: `https://www.google.com/maps/dir/?api=1&destination=${encodedQuery}`
+        };
+    }
+
+    function openMapModal(data) {
+        const mapModal = document.createElement('div');
+        mapModal.className = 'map-modal-overlay';
+        mapModal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 4000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        `;
+        const { embedSrc, viewLink, directionsLink } = buildMapLinks(data);
+        
+        mapModal.innerHTML = `
+            <div style="background: #1a1a1a; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 2rem; max-width: 900px; width: 100%; position: relative; max-height: 90vh; overflow-y: auto;">
+                <button class="map-close-btn" style="position: absolute; top: 1rem; right: 1rem; background: rgba(255, 255, 255, 0.1); border: none; color: white; font-size: 1.5rem; width: 2.5rem; height: 2.5rem; border-radius: 50%; cursor: pointer; z-index: 10;">&times;</button>
+                <h2 style="font-family: 'Playfair Display', serif; color: #ffffff; margin-bottom: 1.5rem; font-size: 2rem;">${data.name} - Location</h2>
+                <div style="width: 100%; height: 450px; border-radius: 8px; overflow: hidden; margin-bottom: 1rem; position: relative;">
+                    <iframe 
+                        width="100%" 
+                        height="100%" 
+                        style="border:0" 
+                        loading="lazy" 
+                        allowfullscreen
+                        referrerpolicy="no-referrer-when-downgrade"
+                        src="${embedSrc}">
+                    </iframe>
+                </div>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <a href="${viewLink}" target="_blank" style="background: #10b981; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s;">Open in Google Maps</a>
+                    <a href="${directionsLink}" target="_blank" style="background: #2563eb; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s;">Get Directions</a>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(mapModal);
         document.body.style.overflow = 'hidden';
-    }
-
-    // Function to close choice modal
-    function closeChoiceModal() {
-        choiceModal.classList.remove('show');
-        choiceModal.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = 'auto';
-        currentDestinationId = null;
-        currentDestinationName = null;
-    }
-
-    // Handle Learn More button clicks
-    learnMoreButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            const destinationId = this.getAttribute('data-id');
-            const destinationCard = this.closest('.destination-card');
-            const destinationName = destinationCard ? destinationCard.querySelector('h3').textContent : 'Destination';
-            
-            openChoiceModal(destinationId, destinationName);
+        
+        const closeBtn = mapModal.querySelector('.map-close-btn');
+        const closeMapModal = () => {
+            if (document.body.contains(mapModal)) {
+                document.body.removeChild(mapModal);
+                document.body.style.overflow = 'auto';
+                document.removeEventListener('keydown', escapeHandler);
+            }
+        };
+        
+        closeBtn.addEventListener('click', closeMapModal);
+        mapModal.addEventListener('click', function(e) {
+            if (e.target === mapModal) {
+                closeMapModal();
+            }
         });
-    });
+        
+        const escapeHandler = function(e) {
+            if (e.key === 'Escape') {
+                closeMapModal();
+            }
+        };
+        document.addEventListener('keydown', escapeHandler);
+    }
 
-    // Handle choice button clicks
-    choiceButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const action = this.getAttribute('data-action');
-            const data = destinationData[currentDestinationId];
-            
+    function openStoryModal(data) {
+        const storyModal = document.createElement('div');
+        storyModal.className = 'story-modal-overlay';
+        storyModal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 4000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        `;
+        
+        storyModal.innerHTML = `
+            <div style="background: #1a1a1a; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 2rem; max-width: 600px; width: 100%; position: relative;">
+                <button class="story-close-btn" style="position: absolute; top: 1rem; right: 1rem; background: rgba(255, 255, 255, 0.1); border: none; color: white; font-size: 1.5rem; width: 2.5rem; height: 2.5rem; border-radius: 50%; cursor: pointer;">&times;</button>
+                <h2 style="font-family: 'Playfair Display', serif; color: #ffffff; margin-bottom: 1.5rem; font-size: 2rem;">${data.name}</h2>
+                <p style="color: #d1d5db; line-height: 1.8; font-size: 1.1rem;">${data.story}</p>
+            </div>
+        `;
+        
+        document.body.appendChild(storyModal);
+        document.body.style.overflow = 'hidden';
+        
+        const closeBtn = storyModal.querySelector('.story-close-btn');
+        const closeStoryModal = () => {
+            if (document.body.contains(storyModal)) {
+                document.body.removeChild(storyModal);
+                document.body.style.overflow = 'auto';
+                document.removeEventListener('keydown', escapeHandler);
+            }
+        };
+        
+        closeBtn.addEventListener('click', closeStoryModal);
+        storyModal.addEventListener('click', function(e) {
+            if (e.target === storyModal) {
+                closeStoryModal();
+            }
+        });
+        
+        const escapeHandler = function(e) {
+            if (e.key === 'Escape') {
+                closeStoryModal();
+            }
+        };
+        document.addEventListener('keydown', escapeHandler);
+    }
+
+    const locationLinks = document.querySelectorAll('.location-link');
+    const storyLinks = document.querySelectorAll('.story-link');
+
+    locationLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const data = destinationData[this.dataset.id];
             if (!data) {
                 alert('Destination information not available.');
-                closeChoiceModal();
                 return;
             }
-
-            if (action === 'location') {
-                // Show embedded map modal
-                const mapModal = document.createElement('div');
-                mapModal.className = 'map-modal-overlay';
-                mapModal.style.cssText = `
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: rgba(0, 0, 0, 0.9);
-                    z-index: 4000;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    padding: 2rem;
-                `;
-                
-                mapModal.innerHTML = `
-                    <div style="background: #1a1a1a; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 2rem; max-width: 900px; width: 100%; position: relative; max-height: 90vh; overflow-y: auto;">
-                        <button class="map-close-btn" style="position: absolute; top: 1rem; right: 1rem; background: rgba(255, 255, 255, 0.1); border: none; color: white; font-size: 1.5rem; width: 2.5rem; height: 2.5rem; border-radius: 50%; cursor: pointer; z-index: 10;">&times;</button>
-                        <h2 style="font-family: 'Playfair Display', serif; color: #ffffff; margin-bottom: 1.5rem; font-size: 2rem;">${data.name} - Location</h2>
-                        <div style="width: 100%; height: 450px; border-radius: 8px; overflow: hidden; margin-bottom: 1rem; position: relative;">
-                            <iframe 
-                                width="100%" 
-                                height="100%" 
-                                style="border:0" 
-                                loading="lazy" 
-                                allowfullscreen
-                                referrerpolicy="no-referrer-when-downgrade"
-                                src="https://maps.google.com/maps?q=${encodeURIComponent(data.name + ', Antipolo, Rizal, Philippines')}&t=&z=15&ie=UTF8&iwloc=&output=embed">
-                            </iframe>
-                        </div>
-                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                            <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.name + ', Antipolo, Rizal, Philippines')}" target="_blank" style="background: #10b981; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s;">Open in Google Maps</a>
-                            <a href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(data.name + ', Antipolo, Rizal, Philippines')}" target="_blank" style="background: #2563eb; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s;">Get Directions</a>
-                        </div>
-                    </div>
-                `;
-                
-                document.body.appendChild(mapModal);
-                document.body.style.overflow = 'hidden';
-                
-                // Close map modal
-                const closeBtn = mapModal.querySelector('.map-close-btn');
-                closeBtn.addEventListener('click', () => {
-                    document.body.removeChild(mapModal);
-                    document.body.style.overflow = 'auto';
-                });
-                
-                mapModal.addEventListener('click', function(e) {
-                    if (e.target === mapModal) {
-                        document.body.removeChild(mapModal);
-                        document.body.style.overflow = 'auto';
-                    }
-                });
-                
-                // Close with Escape key
-                const escapeHandler = function(e) {
-                    if (e.key === 'Escape' && document.body.contains(mapModal)) {
-                        document.body.removeChild(mapModal);
-                        document.body.style.overflow = 'auto';
-                        document.removeEventListener('keydown', escapeHandler);
-                    }
-                };
-                document.addEventListener('keydown', escapeHandler);
-                
-                closeChoiceModal();
-            } else if (action === 'story') {
-                // Show story in an alert or create a story modal
-                const storyModal = document.createElement('div');
-                storyModal.className = 'story-modal-overlay';
-                storyModal.style.cssText = `
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: rgba(0, 0, 0, 0.9);
-                    z-index: 4000;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    padding: 2rem;
-                `;
-                
-                storyModal.innerHTML = `
-                    <div style="background: #1a1a1a; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 2rem; max-width: 600px; width: 100%; position: relative;">
-                        <button class="story-close-btn" style="position: absolute; top: 1rem; right: 1rem; background: rgba(255, 255, 255, 0.1); border: none; color: white; font-size: 1.5rem; width: 2.5rem; height: 2.5rem; border-radius: 50%; cursor: pointer;">&times;</button>
-                        <h2 style="font-family: 'Playfair Display', serif; color: #ffffff; margin-bottom: 1.5rem; font-size: 2rem;">${data.name}</h2>
-                        <p style="color: #d1d5db; line-height: 1.8; font-size: 1.1rem;">${data.story}</p>
-                    </div>
-                `;
-                
-                document.body.appendChild(storyModal);
-                
-                // Close story modal
-                const closeBtn = storyModal.querySelector('.story-close-btn');
-                closeBtn.addEventListener('click', () => {
-                    document.body.removeChild(storyModal);
-                    document.body.style.overflow = 'auto';
-                });
-                
-                storyModal.addEventListener('click', function(e) {
-                    if (e.target === storyModal) {
-                        document.body.removeChild(storyModal);
-                        document.body.style.overflow = 'auto';
-                    }
-                });
-                
-                closeChoiceModal();
-            }
+            openMapModal(data);
         });
     });
 
-    // Close choice modal
-    choiceModalClose.addEventListener('click', closeChoiceModal);
-    
-    // Close modal when clicking outside
-    choiceModal.addEventListener('click', function(e) {
-        if (e.target === choiceModal) {
-            closeChoiceModal();
-        }
-    });
-
-    // Close modal with Escape key
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && choiceModal.classList.contains('show')) {
-            closeChoiceModal();
-        }
+    storyLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const data = destinationData[this.dataset.id];
+            if (!data) {
+                alert('Destination information not available.');
+                return;
+            }
+            openStoryModal(data);
+        });
     });
 
     console.log('Antipolo Tourism Website - JavaScript loaded successfully!');

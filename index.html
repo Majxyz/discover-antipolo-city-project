@@ -60,7 +60,10 @@
                         <div class="card-content">
                             <h3>Hinulugang Taktak Falls</h3>
                             <p>Experience the natural beauty of this historic waterfall, perfect for nature lovers and photography enthusiasts.</p>
-                            <a href="#" class="card-btn" data-id="hinulugang-taktak" aria-haspopup="dialog">Learn More</a>
+                            <div class="card-actions">
+                                <a href="#" class="card-action location-link" data-id="hinulugang-taktak">View Location </a>
+                                <a href="#" class="card-action story-link" data-id="hinulugang-taktak">Read Story</a>
+                            </div>
                         </div>
                     </div>
 
@@ -71,7 +74,10 @@
                         <div class="card-content">
                             <h3>Pinto Art Museum</h3>
                             <p>Immerse yourself in contemporary Filipino art in this beautiful museum surrounded by lush gardens.</p>
-                            <a href="#" class="card-btn" data-id="pinto-art-museum" aria-haspopup="dialog">Learn More</a>
+                            <div class="card-actions">
+                                <a href="#" class="card-action location-link" data-id="pinto-art-museum">View Location </a>
+                                <a href="#" class="card-action story-link" data-id="pinto-art-museum">Read Story</a>
+                            </div>
                         </div>
                     </div>
 
@@ -82,7 +88,10 @@
                         <div class="card-content">
                             <h3>Antipolo Cathedral</h3>
                             <p>Visit the National Shrine of Our Lady of Peace and Good Voyage, a significant religious landmark.</p>
-                            <a href="#" class="card-btn" data-id="antipolo-cathedral" aria-haspopup="dialog">Learn More</a>
+                            <div class="card-actions">
+                                <a href="#" class="card-action location-link" data-id="antipolo-cathedral">View Location </a>
+                                <a href="#" class="card-action story-link" data-id="antipolo-cathedral">Read Story</a>
+                            </div>
                         </div>
                     </div>
 
@@ -93,7 +102,10 @@
                         <div class="card-content">
                             <h3>Cloud 9</h3>
                             <p>Enjoy panoramic views of Metro Manila from this popular viewpoint with thrilling hanging bridge.</p>
-                            <a href="#" class="card-btn" data-id="cloud-9" aria-haspopup="dialog">Learn More</a>
+                            <div class="card-actions">
+                                <a href="#" class="card-action location-link" data-id="cloud-9">View Location </a>
+                                <a href="#" class="card-action story-link" data-id="cloud-9">Read Story</a>
+                            </div>
                         </div>
                     </div>
 
@@ -104,7 +116,10 @@
                         <div class="card-content">
                             <h3>Mount Purro Nature Reserve</h3>
                             <p>Discover pristine nature and eco-tourism activities in this beautiful mountain reserve with hiking trails and wildlife.</p>
-                            <a href="#" class="card-btn" data-id="mount-purro" aria-haspopup="dialog">Learn More</a>
+                            <div class="card-actions">
+                                <a href="#" class="card-action location-link" data-id="mount-purro">View Location</a>
+                                <a href="#" class="card-action story-link" data-id="mount-purro">Read Story</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -116,9 +131,9 @@
                 <h2 class="section-title">Gallery of Antipolo's Beauty</h2>
                 <p class="section-subtitle">Discover the stunning landscapes, cultural spots, and hidden gems that make Antipolo a must-visit destination.</p>
                 
-                <!-- Tourist Attraction Gallery Component -->
+                <!-- tourist attraction gallery container -->
    <div class="attractions-gallery">
-    <!-- Card 1: Pinto Art Museum -->
+    <!-- Card 1: pinto art museum -->
     <div class="attraction-card" data-attraction="pinto-art-museum">
         <div class="card-header">
             <h3 class="attraction-title">Pinto Art Museum</h3>
@@ -200,7 +215,7 @@
         </p>
     </div>
 
-    <!-- Card 3: Mount Purro Nature Reserve -->
+    <!-- Card 3, mount purro nature reserve -->
     <div class="attraction-card" data-attraction="mount-purro-nature-reserve">
         <div class="card-header">
             <h3 class="attraction-title">Mount Purro Nature Reserve</h3>
@@ -282,7 +297,7 @@
         </p>
     </div>
 
-    <!-- Card 5: Cloud 9 -->
+    <!-- card 5: cloud 9 -->
     <div class="attraction-card" data-attraction="cloud-9">
         <div class="card-header">
             <h3 class="attraction-title">Cloud 9</h3>
@@ -324,7 +339,7 @@
     </div>
 </div>
 
-            <!-- Lightbox Modal -->
+            <!-- lightbox mudal -->
             <div id="lightbox" class="lightbox">
                 <span class="close-btn">&times;</span>
                 <img class="lightbox-img" src="" alt="Enlarged image">
@@ -332,18 +347,6 @@
         </section>
 
     </main>
-    
-    <!-- Choice Modal for Learn More -->
-    <div id="choice-modal" class="choice-modal-overlay" role="dialog" aria-modal="true" aria-hidden="true">
-        <div class="choice-modal">
-            <button class="choice-modal-close" aria-label="Close modal">&times;</button>
-            <h2 class="choice-modal-title">Choose an Option</h2>
-            <div class="choice-modal-options">
-                <button class="choice-btn location" data-action="location">Check Location</button>
-                <button class="choice-btn story" data-action="story">Story of this Spot</button>
-            </div>
-        </div>
-    </div>
     
     <script src="script.js"></script>
 </body>
