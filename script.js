@@ -282,9 +282,12 @@ document.addEventListener('DOMContentLoaded', function() {
             display: none;
             background: none;
             border: none;
-            font-size: 1.5rem;
+            font-size: 1.75rem;
             cursor: pointer;
-            color: var(--text-dark);
+            color: #ffffff;
+            padding: 0.25rem;
+            line-height: 1;
+            z-index: 1001;
         `;
         
         // add hamburger to nav links
@@ -396,6 +399,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function openMapModal(data) {
         const mapModal = document.createElement('div');
         mapModal.className = 'map-modal-overlay';
+        const isMobile = window.innerWidth <= 768;
+        const isSmallMobile = window.innerWidth <= 480;
         mapModal.style.cssText = `
             position: fixed;
             top: 0;
@@ -407,15 +412,15 @@ document.addEventListener('DOMContentLoaded', function() {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 2rem;
+            padding: ${isSmallMobile ? '0.5rem' : isMobile ? '1rem' : '2rem'};
         `;
         const { embedSrc, viewLink, directionsLink } = buildMapLinks(data);
         
         mapModal.innerHTML = `
-            <div style="background: #1a1a1a; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 2rem; max-width: 900px; width: 100%; position: relative; max-height: 90vh; overflow-y: auto;">
-                <button class="map-close-btn" style="position: absolute; top: 1rem; right: 1rem; background: rgba(255, 255, 255, 0.1); border: none; color: white; font-size: 1.5rem; width: 2.5rem; height: 2.5rem; border-radius: 50%; cursor: pointer; z-index: 10;">&times;</button>
-                <h2 style="font-family: 'Playfair Display', serif; color: #ffffff; margin-bottom: 1.5rem; font-size: 2rem;">${data.name} - Location</h2>
-                <div style="width: 100%; height: 450px; border-radius: 8px; overflow: hidden; margin-bottom: 1rem; position: relative;">
+            <div style="background: #1a1a1a; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: ${isSmallMobile ? '1.25rem' : isMobile ? '1.5rem' : '2rem'}; max-width: 900px; width: 100%; position: relative; max-height: 90vh; overflow-y: auto;">
+                <button class="map-close-btn" style="position: absolute; top: ${isSmallMobile ? '0.75rem' : '1rem'}; right: ${isSmallMobile ? '0.75rem' : '1rem'}; background: rgba(255, 255, 255, 0.1); border: none; color: white; font-size: ${isSmallMobile ? '1.35rem' : '1.5rem'}; width: ${isSmallMobile ? '2.25rem' : '2.5rem'}; height: ${isSmallMobile ? '2.25rem' : '2.5rem'}; border-radius: 50%; cursor: pointer; z-index: 10; transition: all 0.3s;">&times;</button>
+                <h2 style="font-family: 'Playfair Display', serif; color: #ffffff; margin-bottom: ${isSmallMobile ? '1rem' : '1.5rem'}; font-size: ${isSmallMobile ? '1.25rem' : isMobile ? '1.5rem' : '2rem'}; line-height: 1.3;">${data.name} - Location</h2>
+                <div style="width: 100%; height: ${isSmallMobile ? '250px' : isMobile ? '300px' : '450px'}; border-radius: 8px; overflow: hidden; margin-bottom: ${isSmallMobile ? '0.75rem' : '1rem'}; position: relative;">
                     <iframe 
                         width="100%" 
                         height="100%" 
@@ -426,9 +431,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         src="${embedSrc}">
                     </iframe>
                 </div>
-                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                    <a href="${viewLink}" target="_blank" style="background: #10b981; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s;">Open in Google Maps</a>
-                    <a href="${directionsLink}" target="_blank" style="background: #2563eb; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s;">Get Directions</a>
+                <div style="display: flex; gap: ${isSmallMobile ? '0.75rem' : '1rem'}; flex-wrap: wrap; ${isMobile ? 'flex-direction: column;' : ''}">
+                    <a href="${viewLink}" target="_blank" style="background: #10b981; color: white; padding: ${isSmallMobile ? '0.625rem 1.25rem' : '0.75rem 1.5rem'}; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s; ${isMobile ? 'width: 100%; text-align: center;' : 'flex: 1;'} font-size: ${isSmallMobile ? '0.9rem' : '1rem'}; display: inline-block;">Open in Google Maps</a>
+                    <a href="${directionsLink}" target="_blank" style="background: #2563eb; color: white; padding: ${isSmallMobile ? '0.625rem 1.25rem' : '0.75rem 1.5rem'}; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s; ${isMobile ? 'width: 100%; text-align: center;' : 'flex: 1;'} font-size: ${isSmallMobile ? '0.9rem' : '1rem'}; display: inline-block;">Get Directions</a>
                 </div>
             </div>
         `;
@@ -463,6 +468,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function openStoryModal(data) {
         const storyModal = document.createElement('div');
         storyModal.className = 'story-modal-overlay';
+        const isMobile = window.innerWidth <= 768;
+        const isSmallMobile = window.innerWidth <= 480;
         storyModal.style.cssText = `
             position: fixed;
             top: 0;
@@ -474,14 +481,14 @@ document.addEventListener('DOMContentLoaded', function() {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 2rem;
+            padding: ${isSmallMobile ? '1rem' : isMobile ? '1.5rem' : '2rem'};
         `;
         
         storyModal.innerHTML = `
-            <div style="background: #1a1a1a; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 2rem; max-width: 600px; width: 100%; position: relative;">
-                <button class="story-close-btn" style="position: absolute; top: 1rem; right: 1rem; background: rgba(255, 255, 255, 0.1); border: none; color: white; font-size: 1.5rem; width: 2.5rem; height: 2.5rem; border-radius: 50%; cursor: pointer;">&times;</button>
-                <h2 style="font-family: 'Playfair Display', serif; color: #ffffff; margin-bottom: 1.5rem; font-size: 2rem;">${data.name}</h2>
-                <p style="color: #d1d5db; line-height: 1.8; font-size: 1.1rem;">${data.story}</p>
+            <div style="background: #1a1a1a; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: ${isSmallMobile ? '1.25rem' : isMobile ? '1.5rem' : '2rem'}; max-width: 600px; width: 100%; position: relative; max-height: 90vh; overflow-y: auto;">
+                <button class="story-close-btn" style="position: absolute; top: ${isSmallMobile ? '0.75rem' : '1rem'}; right: ${isSmallMobile ? '0.75rem' : '1rem'}; background: rgba(255, 255, 255, 0.1); border: none; color: white; font-size: ${isSmallMobile ? '1.35rem' : '1.5rem'}; width: ${isSmallMobile ? '2.25rem' : '2.5rem'}; height: ${isSmallMobile ? '2.25rem' : '2.5rem'}; border-radius: 50%; cursor: pointer; transition: all 0.3s;">&times;</button>
+                <h2 style="font-family: 'Playfair Display', serif; color: #ffffff; margin-bottom: ${isSmallMobile ? '1rem' : '1.5rem'}; font-size: ${isSmallMobile ? '1.5rem' : isMobile ? '1.75rem' : '2rem'}; line-height: 1.3;">${data.name}</h2>
+                <p style="color: #d1d5db; line-height: ${isSmallMobile ? '1.7' : '1.8'}; font-size: ${isSmallMobile ? '0.95rem' : isMobile ? '1rem' : '1.1rem'};">${data.story}</p>
             </div>
         `;
         
