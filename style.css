@@ -88,6 +88,7 @@ nav {
     font-weight: 700;
     color: #ffffff;
     text-decoration: none;
+    white-space: nowrap;
 }
 
 .nav-links {
@@ -98,7 +99,7 @@ nav {
     margin: 0;
 }
 
-/* ensure navigation is visible on desktop(tomorrow_*/
+/* ensure navigation is visible on desktop */
 @media (min-width: 769px) {
     .nav-links {
         display: flex !important;
@@ -106,6 +107,31 @@ nav {
     
     .hamburger {
         display: none !important;
+    }
+}
+
+/* Hamburger button styling */
+.hamburger {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.75rem;
+    cursor: pointer;
+    color: #ffffff;
+    padding: 0.25rem;
+    line-height: 1;
+    z-index: 1001;
+    transition: var(--transition);
+}
+
+.hamburger:hover {
+    color: var(--secondary-color);
+    transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+    .hamburger {
+        display: block;
     }
 }
 
@@ -185,10 +211,16 @@ nav {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-attachment: fixed;
     opacity: 0;
     transition: opacity 2s ease-in-out;
     will-change: opacity;
+}
+
+/* Use fixed attachment only on desktop for better performance */
+@media (min-width: 769px) {
+    .hero-slide {
+        background-attachment: fixed;
+    }
 }
 
 .hero-slide.active {
@@ -538,7 +570,7 @@ section {
 /* Tourist Attraction Gallery Component */
 .attractions-gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 2rem;
     margin-top: 3rem;
 }
@@ -816,6 +848,44 @@ section {
     }
 }
 
+/* Medium screens (small tablets) */
+@media (min-width: 481px) and (max-width: 768px) {
+    .hero-title {
+        font-size: 3rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.15rem;
+    }
+    
+    .section-title {
+        font-size: 2.25rem;
+    }
+    
+    .destinations-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .attractions-gallery {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .logo {
+        font-size: 1.75rem;
+    }
+    
+    .nav-links {
+        gap: 1.5rem;
+    }
+    
+    .card-actions {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+}
+
 /* Tablet Responsiveness */
 @media (min-width: 769px) and (max-width: 1024px) {
     .hero-title {
@@ -847,10 +917,24 @@ section {
     .container {
         padding: 0 30px;
     }
+    
+    .logo {
+        font-size: 1.85rem;
+    }
 }
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
+    nav {
+        padding: 0.75rem 0;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    .logo {
+        font-size: 1.5rem;
+    }
+    
     .nav-links {
         display: none;
         flex-direction: column;
@@ -860,37 +944,100 @@ section {
         left: 0;
         right: 0;
         background: rgba(0, 0, 0, 0.98);
-        padding: 1rem;
+        padding: 1.5rem 1rem;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
     }
     
     .nav-links.mobile-open {
         display: flex;
     }
     
+    .nav-links a {
+        padding: 0.5rem 0;
+        font-size: 1rem;
+    }
+    
     #hero {
-        min-height: 80vh;
+        min-height: 85vh;
+        padding-top: 60px;
     }
     
     .hero-background {
-        background-size: 100%;
+        background-size: cover;
+    }
+    
+    .hero-content {
+        padding: 0 15px;
     }
     
     .hero-title {
-        font-size: 2.5rem;
-        text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+        font-size: 2.25rem;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
     }
     
     .hero-subtitle {
-        font-size: 1.125rem;
+        font-size: 1rem;
+        margin-bottom: 2rem;
+        padding: 0 10px;
+    }
+    
+    .btn-explore {
+        padding: 0.875rem 2rem;
+        font-size: 0.95rem;
+    }
+    
+    section {
+        padding: 3.5rem 0;
     }
     
     .section-title {
-        font-size: 2rem;
+        font-size: 1.875rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .section-subtitle {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+        padding: 0 10px;
     }
     
     .destinations-grid {
         grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .destination-card {
+        margin: 0 auto;
+        max-width: 100%;
+    }
+    
+    .card-image {
+        height: 220px;
+    }
+    
+    .card-content {
+        padding: 1.25rem;
+    }
+    
+    .card-content h3 {
+        font-size: 1.15rem;
+    }
+    
+    .card-content p {
+        font-size: 0.95rem;
+    }
+    
+    .card-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .card-action {
+        width: 100%;
+        justify-content: center;
+        padding: 0.75rem 1.5rem;
     }
     
     .attractions-gallery {
@@ -898,38 +1045,44 @@ section {
         gap: 1.5rem;
     }
     
+    .attraction-card {
+        margin: 0 auto;
+        max-width: 100%;
+    }
+    
     .gallery-container {
         margin: 0 1rem;
     }
     
     .gallery-image {
-        height: 200px;
+        height: 220px;
     }
     
     .gallery-nav {
-        width: 35px;
-        height: 35px;
+        width: 36px;
+        height: 36px;
     }
     
     .gallery-nav svg {
-        width: 16px;
-        height: 16px;
+        width: 18px;
+        height: 18px;
     }
     
     .prev-btn {
-        left: 5px;
+        left: 8px;
     }
     
     .next-btn {
-        right: 5px;
+        right: 8px;
     }
     
     .pagination-dots {
         padding: 0 1rem;
+        margin-top: 0.75rem;
     }
     
     .card-header {
-        padding: 1rem 1rem 0;
+        padding: 1.25rem 1.25rem 0;
     }
     
     .card-info {
@@ -937,25 +1090,19 @@ section {
     }
     
     .attraction-title {
-        font-size: 1.25rem;
+        font-size: 1.35rem;
     }
     
     .category {
-        margin: 0.75rem 1rem;
+        margin: 0.75rem 1.25rem;
         margin-bottom: 0.5rem;
+        font-size: 0.65rem;
+        padding: 5px 12px;
     }
     
     .attraction-description {
-        padding: 0 1rem 1rem 1rem;
-    }
-    
-    .contact-content {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-    
-    .card-actions {
-        flex-direction: column;
+        padding: 0 1.25rem 1.25rem 1.25rem;
+        font-size: 0.9rem;
     }
     
     .container {
@@ -979,48 +1126,32 @@ section {
         height: 2.5rem;
         font-size: 1.5rem;
     }
-    
-    /* Map modal responsive for mobile */
-    .map-modal-overlay {
-        padding: 0.5rem;
-    }
-    
-    .map-modal-overlay > div {
-        padding: 1.5rem !important;
-        max-width: 100% !important;
-    }
-    
-    .map-modal-overlay h2 {
-        font-size: 1.5rem !important;
-        margin-bottom: 1rem !important;
-    }
-    
-    .map-modal-overlay > div > div:first-of-type {
-        height: 300px !important;
-        margin-bottom: 1rem !important;
-    }
-    
-    .map-modal-overlay > div > div:last-of-type {
-        flex-direction: column !important;
-    }
-    
-    .map-modal-overlay > div > div:last-of-type a {
-        width: 100% !important;
-        text-align: center !important;
-    }
 }
 
-@media (max-width: 340px) {
+/* Small mobile devices */
+@media (max-width: 480px) {
+    nav {
+        padding: 0.625rem 0;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+    
+    .logo {
+        font-size: 1.35rem;
+    }
+    
     .hero-title {
-        font-size: 2rem;
+        font-size: 1.875rem;
+        line-height: 1.3;
     }
     
     .hero-subtitle {
-        font-size: 1rem;
+        font-size: 0.95rem;
+        padding: 0 5px;
     }
     
     .btn-explore {
-        padding: 0.875rem 2rem;
+        padding: 0.75rem 1.75rem;
         font-size: 0.9rem;
     }
     
@@ -1033,19 +1164,20 @@ section {
     }
     
     .section-subtitle {
-        font-size: 1rem;
+        font-size: 0.95rem;
+        padding: 0 5px;
+    }
+    
+    .container {
+        padding: 0 12px;
     }
     
     .destinations-grid {
-        gap: 1rem;
+        gap: 1.25rem;
     }
     
-    .attractions-gallery {
-        gap: 1rem;
-    }
-    
-    .gallery-image {
-        height: 180px;
+    .card-image {
+        height: 200px;
     }
     
     .card-content {
@@ -1060,17 +1192,119 @@ section {
         font-size: 0.9rem;
     }
     
+    .attractions-gallery {
+        gap: 1.25rem;
+    }
+    
+    .gallery-container {
+        margin: 0 0.75rem;
+    }
+    
+    .gallery-image {
+        height: 200px;
+    }
+    
+    .gallery-nav {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .gallery-nav svg {
+        width: 16px;
+        height: 16px;
+    }
+    
+    .prev-btn {
+        left: 5px;
+    }
+    
+    .next-btn {
+        right: 5px;
+    }
+    
+    .card-header {
+        padding: 1rem 1rem 0;
+    }
+    
+    .attraction-title {
+        font-size: 1.2rem;
+    }
+    
+    .category {
+        margin: 0.625rem 1rem;
+        margin-bottom: 0.5rem;
+        font-size: 0.6rem;
+        padding: 4px 10px;
+    }
+    
+    .attraction-description {
+        padding: 0 1rem 1rem 1rem;
+        font-size: 0.85rem;
+    }
+    
     /* Map modal for small mobile */
-    .map-modal-overlay > div > div:first-of-type {
-        height: 250px !important;
+    .map-modal-overlay {
+        padding: 0.5rem;
+    }
+    
+    .map-modal-overlay > div {
+        padding: 1.25rem !important;
+        max-width: 100% !important;
     }
     
     .map-modal-overlay h2 {
         font-size: 1.25rem !important;
+        margin-bottom: 1rem !important;
     }
     
-    .map-modal-overlay > div {
+    .map-modal-overlay > div > div:first-of-type {
+        height: 250px !important;
+        margin-bottom: 0.75rem !important;
+    }
+    
+    .map-modal-overlay > div > div:last-of-type {
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+    }
+    
+    .map-modal-overlay > div > div:last-of-type a {
+        width: 100% !important;
+        text-align: center !important;
+        padding: 0.625rem 1.25rem !important;
+        font-size: 0.9rem !important;
+    }
+    
+    /* Story modal for small mobile */
+    .story-modal-overlay {
         padding: 1rem !important;
+    }
+    
+    .story-modal-overlay > div {
+        padding: 1.25rem !important;
+        max-width: 100% !important;
+    }
+    
+    .story-modal-overlay h2 {
+        font-size: 1.5rem !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    .story-modal-overlay p {
+        font-size: 0.95rem !important;
+        line-height: 1.7 !important;
+    }
+    
+    .lightbox-img {
+        max-width: 98%;
+        max-height: 75vh;
+    }
+    
+    .close-btn {
+        top: 0.75rem;
+        right: 0.75rem;
+        width: 2.25rem;
+        height: 2.25rem;
+        font-size: 1.35rem;
     }
 }
 
@@ -1114,6 +1348,22 @@ html {
     .container {
         max-width: 1400px;
     }
+    
+    .logo {
+        font-size: 2rem;
+    }
+}
+
+/* Large Desktop Screens */
+@media (min-width: 1200px) {
+    .attractions-gallery {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2.5rem;
+    }
+    
+    .destinations-grid {
+        gap: 2.5rem;
+    }
 }
 
 @media (min-width: 1440px) {
@@ -1125,7 +1375,19 @@ html {
         font-size: 4.5rem;
     }
     
+    .hero-subtitle {
+        font-size: 1.35rem;
+    }
+    
     .section-title {
         font-size: 3.5rem;
+    }
+    
+    .section-subtitle {
+        font-size: 1.25rem;
+    }
+    
+    .container {
+        max-width: 1600px;
     }
 }
